@@ -47,7 +47,7 @@ data class PostRegistrosDeCompra(val registroDeCompraDoPost: RegistroDeCompraDoP
                 , quantasVezesLocal, tagLocal
                 , valorDaParcelaLocal, contaTextLocal
                 , dataDaCompraLocal, urlNfe
-                , null)
+                , "")
         }
 
     }

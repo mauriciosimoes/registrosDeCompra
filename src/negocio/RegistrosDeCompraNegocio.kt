@@ -3,6 +3,7 @@ package com.example.negocio
 import com.example.RouteRegistrosDeCompra
 import com.example.dao.DAOFacade
 import com.example.model.PostRegistrosDeCompra
+import com.example.model.RegistroDeCompra
 import com.fasterxml.jackson.core.JsonParseException
 import com.fasterxml.jackson.databind.JsonMappingException
 import com.fasterxml.jackson.databind.exc.MismatchedInputException
@@ -43,24 +44,34 @@ fun Route.routeRegistrosDeCompra(dao: DAOFacade) {
             val registroDeCompraLocal
                     = post.registroDeCompraDoPost.toRegistroDeCompra()
 
+            // insert conta resolverContaText( registroDeCompraLocal.contaText )
+            val conta = "em dúvida..."
 
-            // resolverContaText( registroDeCompraLocal.contaText )
+            val id: Int = dao.createRegistroDeConta(
+                registroDeCompraLocal.oQueFoiComprado
+            , registroDeCompraLocal.quantoFoi
+            , registroDeCompraLocal.quantasVezes
+            , registroDeCompraLocal.tag
+            , registroDeCompraLocal.valorDaParcela
+            , ""
+            , registroDeCompraLocal.dataDaCompra
+            , registroDeCompraLocal.urlNfe
+            , userIdPrincipal.name
+            )
 
-            // registroDeCompraLocal.usuario = userIdPrincipal.name
+            val registroDeCompraResponse = RegistroDeCompra( id
+                , registroDeCompraLocal.oQueFoiComprado
+                , registroDeCompraLocal.quantoFoi
+                , registroDeCompraLocal.quantasVezes
+                , registroDeCompraLocal.tag
+                , registroDeCompraLocal.valorDaParcela
+                , ""
+                , registroDeCompraLocal.dataDaCompra
+                , registroDeCompraLocal.urlNfe
+                , userIdPrincipal.name
+            )
 
-//            val id: Int = dao.createConta(it.text, it.isDefaut)
-//            registrosDeCompra += RegistroDeCompra(post.registroDeCompraDoPost.oQueFoiComprado
-//                , post.registroDeCompraDoPost.quantoFoi
-//                , post.registroDeCompraDoPost.quantasVezes
-//                , post.registroDeCompraDoPost.tag
-//                , post.registroDeCompraDoPost.valorDaParcela
-//                , post.registroDeCompraDoPost.contaText
-//                , post.registroDeCompraDoPost.dataDaCompra
-//                , post.registroDeCompraDoPost.urlNfe
-//                , userIdPrincipal.name)
-//            call.respond(mapOf("OK" to true))
-
-            call.respond(mapOf("OK" to true, "registroDeCompraLocal" to registroDeCompraLocal))
+            call.respond(mapOf("OK" to true, "registroDeCompra" to registroDeCompraResponse))
         }
     }
 }

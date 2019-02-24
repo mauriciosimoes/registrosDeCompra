@@ -80,7 +80,7 @@ class DAOFacadeDatabase(val db: Database = Database.connect("jdbc:h2:mem:test", 
                 it[RegistrosDeCompra.dataDaCompra] = dataDaCompra
                 it[RegistrosDeCompra.urlNfe] = urlNfe
                 it[RegistrosDeCompra.usuario] = usuario
-            }.generatedKey ?: throw IllegalStateException("No generated key returned")
+            }.generatedKey ?: throw IllegalStateException("No generated key returned.Erro na geração da chave")
         }
     }
 
