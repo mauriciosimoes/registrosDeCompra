@@ -8,15 +8,10 @@ import com.example.dao.DAOFacadeDatabase
 import com.example.negocio.routeRegistrosDeCompra
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.mchange.v2.c3p0.ComboPooledDataSource
-import io.ktor.application.Application
-import io.ktor.application.ApplicationStopped
-import io.ktor.application.call
-import io.ktor.application.install
+import io.ktor.application.*
 import io.ktor.auth.Authentication
 import io.ktor.auth.UserIdPrincipal
-import io.ktor.auth.authenticate
 import io.ktor.auth.jwt.jwt
-import io.ktor.auth.principal
 import io.ktor.features.*
 import io.ktor.http.HttpStatusCode
 import io.ktor.jackson.jackson
@@ -24,10 +19,6 @@ import io.ktor.locations.KtorExperimentalLocationsAPI
 import io.ktor.locations.Location
 import io.ktor.locations.Locations
 import io.ktor.response.*
-import io.ktor.request.*
-import io.ktor.routing.get
-import io.ktor.routing.post
-import io.ktor.routing.route
 import io.ktor.routing.routing
 import io.ktor.util.KtorExperimentalAPI
 import org.jetbrains.exposed.sql.Database
@@ -35,11 +26,10 @@ import java.io.File
 import java.io.IOException
 import java.sql.Driver
 import java.text.DateFormat
-import java.util.*
 
 
 // TODO introduzir teste unitario
-// TODO tratamento de Erro
+// TODO modular as classes de dados Contas por exemplo
 // TODO introduzir autenticacao do google
 
 
@@ -64,7 +54,9 @@ open class SimpleJWT(val secret: String) {
  * Trecho relacionado a [Exception]s
  */
 //class InvalidCredentialsException(message: String) : RuntimeException(message)
+//class SistemaException(message: String) : RuntimeException(message)
 //class NegocioException(message: String) : RuntimeException(message)
+class InternalServerErrorException(message: String) : RuntimeException(message)
 
 
 
@@ -155,15 +147,15 @@ fun Application.mainWithDependencies(dao: DAOFacade) {
     // eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoibWF1cmljaW8ifQ.MHJseQHCQCTpWycVYb____vnKeWwPTXhOdhctEO7Jd8
 
     install(StatusPages) {
-//        exception<InvalidCredentialsException> { exception ->
-//            call.respond(HttpStatusCode.Unauthorized, mapOf("OK" to false, "error" to (exception.message ?: "")))
+//        exception<BadRequestException> { exception ->
+//            call.respond(HttpStatusCode.BadRequest, mapOf("OK" to false, "error" to (exception.message ?: "")))
 //        }
-        exception<BadRequestException> { exception ->
-            call.respond(HttpStatusCode.BadRequest, mapOf("OK" to false, "error" to (exception.message ?: "")))
+        exception<InternalServerErrorException> { exception ->
+            call.respond(HttpStatusCode.InternalServerError, mapOf("OK" to false, "error" to (exception.message ?: "")))
         }
     }
 
     routing {
-        routeRegistrosDeCompra( dao )
+        routeRegistrosDeCompra( dao, log )
     }
 }

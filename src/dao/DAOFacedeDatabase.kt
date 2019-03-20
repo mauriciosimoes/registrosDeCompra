@@ -54,7 +54,6 @@ class DAOFacadeDatabase(val db: Database = Database.connect("jdbc:h2:mem:test", 
     constructor(dir: File) : this(Database.connect("jdbc:h2:file:${dir.canonicalFile.absolutePath}", driver = "org.h2.Driver"))
 
     override fun init() {
-        // Create the used tables
         db.transaction {
             create(RegistrosDeCompra)
         }

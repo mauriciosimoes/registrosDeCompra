@@ -48,6 +48,9 @@ dependencies {
 
     // https://mvnrepository.com/artifact/joda-time/joda-time
     compile group: 'joda-time', name: 'joda-time', version: '2.3'
-
+    
+    compile "io.ktor:ktor-client-apache:$ktor_version"
+//    compile "io.ktor:ktor-client-json:$ktor_version"
+    
     testCompile "io.ktor:ktor-server-tests:$ktor_version"
 }
