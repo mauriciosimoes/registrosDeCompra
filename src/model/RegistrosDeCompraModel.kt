@@ -66,7 +66,7 @@ data class RegistroDeCompra(
     , val usuario: String?
 ) : Serializable
 
-data class Conta(val contaId: Int, val text: String, val isDefaut: Boolean) : Serializable
+data class Conta(val contaId: Int, val text: String, val defaut: Boolean, val usuario: String) : Serializable
 
 
 

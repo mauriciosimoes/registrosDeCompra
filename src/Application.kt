@@ -155,6 +155,8 @@ fun Application.mainWithDependencies(dao: DAOFacade) {
         }
     }
 
+//    install(Jsonfe)
+
     routing {
         routeRegistrosDeCompra( dao, log )
     }
